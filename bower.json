@@ -1,0 +1,13 @@
+{
+  "name": "jquery-prmdialog",
+  "version": "0.0.5",
+  "main": "jquery.prmdialog.js",
+  "dependencies": {
+    "jquery": null,
+    "underscore": null
+  },
+  "ignore": [
+    "package.json",
+    "README.md"
+  ]
+}
