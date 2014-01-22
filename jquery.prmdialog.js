@@ -3,18 +3,24 @@ define(['jquery', 'underscore'], function ($, _) { /***** PRIMEDIA DIALOG v2.2 *
     var prm_dialog_modalClass = 'prm_dialog_modal';
     var prm_dialog_modalID = '_modal';
 	jQuery.Event("dialogClosed");
-    jQuery.prototype.prm_dialog_open = function (b) {
+    jQuery.prototype.prm_dialog_open = function (options) {
 
 
-        if (typeof b == "undefined") {
-            b = {
+        if (typeof options == "undefined") {
+            options = {
                 closeOnEsc: true,
-                closeOnModal: true
+                closeOnModal: true,
+                topPosition: 0,
+                customOpen: false,
+                customClose: false,
             };
         }
-        var a = typeof b.closeOnEsc == "undefined" ? true : b.closeOnEsc;
-        var d = typeof b.closeOnModal == "undefined" ? true : b.closeOnModal;
+        var a = typeof options.closeOnEsc == "undefined" ? true : options.closeOnEsc;
+        var d = typeof options.closeOnModal == "undefined" ? true : options.closeOnModal;
         var c = navigator.userAgent.toLowerCase().search(/msie [678]/) == -1 ? false : true;
+        var topPosition = typeof options.topPosition == "undefined" ? 0 : options.topPosition;
+        var customOpen = typeof options.customOpen == "undefined" ? false : options.customOpen;
+        var customClose = typeof options.customClose == "undefined" ? false : options.customClose;
         return $(this).each(function () {
             var f = $(this);
             var i = f.css("position") == "fixed" ? true : false;
@@ -27,11 +33,18 @@ define(['jquery', 'underscore'], function ($, _) { /***** PRIMEDIA DIALOG v2.2 *
             $('<div id="' + j + '" class="' + prm_dialog_modalClass + '"></div>').appendTo("body");
             var g = $("#" + j).css({
                 position: "fixed",
-                top: "0",
+                top: topPosition,
                 left: "0"
             });
             prm_dialog_stretchObj(g);
-            f.appendTo("body").addClass(prm_dialog_dialogClass).css("display", "block");
+
+            f.appendTo("body").addClass(prm_dialog_dialogClass);
+            if (customOpen) {
+              customOpen(f);
+            } else {
+              f.css("display", "block");
+            }
+
             if (!i) {
                 f.css("position", "absolute");
             }
@@ -51,28 +64,35 @@ define(['jquery', 'underscore'], function ($, _) { /***** PRIMEDIA DIALOG v2.2 *
                 $(document).bind("keydown.prm_dialog_" + e, function (l) {
                     var k = l.which ? l.which : l.keyCode;
                     if (k == 27 && !$("#" + e + " ~ ." + prm_dialog_dialogClass + ":visible").length) {
-                        $("#" + e).prm_dialog_close();
+                        $("#" + e).prm_dialog_close({customClose: customClose});
                     }
                 });
             }
             if (d) {
                 g.bind("click.prm_dialog_" + e, function () {
-                    $("#" + e).prm_dialog_close();
+                    $("#" + e).prm_dialog_close({customClose: customClose});
                     return false;
                 });
             }
         });
     };
-    jQuery.prototype.prm_dialog_close = function () {
-        return $(this).each(function () {
-            var b = $(this);
-            var a = b.attr("id");
-            $("#" + a + prm_dialog_modalID).remove();
-            b.unbind(".prm_dialog_" + a).hide();
-            $(document).unbind(".prm_dialog_" + a);
-            $(window).unbind(".prm_dialog_" + a);
-			$('body').trigger('dialogClosed', b);
-        });
+    jQuery.prototype.prm_dialog_close = function (options) {
+      options = options || {}
+      var customClose = typeof options.customClose == "undefined" ? false : options.customClose;
+      return $(this).each(function () {
+          var b = $(this);
+          var a = b.attr("id");
+          $("#" + a + prm_dialog_modalID).remove();
+          b.unbind(".prm_dialog_" + a);
+          if (customClose) {
+            customClose(b);
+          } else {
+            b.hide();
+          }
+          $(document).unbind(".prm_dialog_" + a);
+          $(window).unbind(".prm_dialog_" + a);
+          $('body').trigger('dialogClosed', b);
+      });
     };
 
 	function dialogClosed(a) {
