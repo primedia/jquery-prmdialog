@@ -1,11 +1,10 @@
-define(['jquery', 'underscore'], function ($, _) { /***** PRIMEDIA DIALOG v2.2 *****/
+define(['jquery', 'underscore'], function ($, _) {
     var prm_dialog_dialogClass = 'prm_dialog';
     var prm_dialog_modalClass = 'prm_dialog_modal';
     var prm_dialog_modalID = '_modal';
-	jQuery.Event("dialogClosed");
-    jQuery.prototype.prm_dialog_open = function (options) {
+    $.Event("dialogClosed");
 
-
+    $.fn.prm_dialog_open = function (options) {
         if (typeof options == "undefined") {
             options = {
                 closeOnEsc: true,
@@ -76,7 +75,8 @@ define(['jquery', 'underscore'], function ($, _) { /***** PRIMEDIA DIALOG v2.2 *
             }
         });
     };
-    jQuery.prototype.prm_dialog_close = function (options) {
+
+    $.fn.prm_dialog_close = function (options) {
       options = options || {}
       var customClose = typeof options.customClose == "undefined" ? false : options.customClose;
       return $(this).each(function () {
@@ -95,9 +95,9 @@ define(['jquery', 'underscore'], function ($, _) { /***** PRIMEDIA DIALOG v2.2 *
       });
     };
 
-	function dialogClosed(a) {
-		$(".prm_dialog_" + a).empty();
-	}
+    function dialogClosed(a) {
+      $(".prm_dialog_" + a).empty();
+    }
 
     function prm_dialog_centerObj(c, b) {
         var a = Math.max(Math.round(($(window).width() - c.outerWidth()) / 2), 0);
@@ -110,7 +110,8 @@ define(['jquery', 'underscore'], function ($, _) { /***** PRIMEDIA DIALOG v2.2 *
             left: a
         });
     }
+
     function prm_dialog_stretchObj(a) {
         a.width($("body").width()).height($("body").height());
     }
-}); /* 2012-04-26 11:13:21 -0400 */
+});
