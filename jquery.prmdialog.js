@@ -3,7 +3,7 @@ define(['jquery', 'underscore'], function ($, _) {
     var prm_dialog_modalClass = 'prm_dialog_modal';
     var prm_dialog_modalID = '_modal';
 	  $.Event("dialogClosed");
-    $.prototype.prm_dialog_open = function (options) {
+    $.fn.prm_dialog_open = function (options) {
 
         if (typeof options == "undefined") {
             options = {
@@ -81,7 +81,7 @@ define(['jquery', 'underscore'], function ($, _) {
             }
         });
     };
-    $.prototype.prm_dialog_close = function (options) {
+    $.fn.prm_dialog_close = function (options) {
       options = options || {}
       var customClose = typeof options.customClose == "undefined" ? false : options.customClose;
       return $(this).each(function () {
