@@ -2,9 +2,9 @@ define(['jquery', 'underscore'], function ($, _) {
     var prm_dialog_dialogClass = 'prm_dialog';
     var prm_dialog_modalClass = 'prm_dialog_modal';
     var prm_dialog_modalID = '_modal';
-    $.Event("dialogClosed");
+	$.Event("dialogClosed");
+    $.prototype.prm_dialog_open = function (options) {
 
-    $.fn.prm_dialog_open = function (options) {
         if (typeof options == "undefined") {
             options = {
                 closeOnEsc: true,
@@ -37,7 +37,9 @@ define(['jquery', 'underscore'], function ($, _) {
             });
             prm_dialog_stretchObj(g);
 
-            f.appendTo("body").addClass(prm_dialog_dialogClass);
+            if (topPosition == 0) {
+              f.appendTo("body").addClass(prm_dialog_dialogClass);
+            }
             if (customOpen) {
               customOpen(f);
             } else {
@@ -47,7 +49,11 @@ define(['jquery', 'underscore'], function ($, _) {
             if (!i) {
                 f.css("position", "absolute");
             }
-            prm_dialog_centerObj(f, i);
+            if (topPosition > 0) {
+              f.css("top", topPosition)
+            } else {
+              prm_dialog_centerObj(f, i);
+            }
             var h = c ? "resize" : "DOMSubtreeModified";
             f.bind(h + ".prm_dialog_" + e, function (event) {
                 var displayElement = $(event.target).css('display');
@@ -75,8 +81,7 @@ define(['jquery', 'underscore'], function ($, _) {
             }
         });
     };
-
-    $.fn.prm_dialog_close = function (options) {
+    $.prototype.prm_dialog_close = function (options) {
       options = options || {}
       var customClose = typeof options.customClose == "undefined" ? false : options.customClose;
       return $(this).each(function () {
@@ -110,7 +115,6 @@ define(['jquery', 'underscore'], function ($, _) {
             left: a
         });
     }
-
     function prm_dialog_stretchObj(a) {
         a.width($("body").width()).height($("body").height());
     }
