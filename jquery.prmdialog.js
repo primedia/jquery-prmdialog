@@ -2,7 +2,7 @@ define(['jquery', 'underscore'], function ($, _) {
     var prm_dialog_dialogClass = 'prm_dialog';
     var prm_dialog_modalClass = 'prm_dialog_modal';
     var prm_dialog_modalID = '_modal';
-	$.Event("dialogClosed");
+	  $.Event("dialogClosed");
     $.prototype.prm_dialog_open = function (options) {
 
         if (typeof options == "undefined") {
