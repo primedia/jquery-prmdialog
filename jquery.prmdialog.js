@@ -2,9 +2,9 @@ define(['jquery', 'underscore'], function ($, _) {
     var prm_dialog_dialogClass = 'prm_dialog';
     var prm_dialog_modalClass = 'prm_dialog_modal';
     var prm_dialog_modalID = '_modal';
+
 	  $.Event("dialogClosed");
     $.fn.prm_dialog_open = function (options) {
-
         if (typeof options == "undefined") {
             options = {
                 closeOnEsc: true,
@@ -81,6 +81,7 @@ define(['jquery', 'underscore'], function ($, _) {
             }
         });
     };
+
     $.fn.prm_dialog_close = function (options) {
       options = options || {}
       var customClose = typeof options.customClose == "undefined" ? false : options.customClose;
@@ -115,6 +116,7 @@ define(['jquery', 'underscore'], function ($, _) {
             left: a
         });
     }
+
     function prm_dialog_stretchObj(a) {
         a.width($("body").width()).height($("body").height());
     }
